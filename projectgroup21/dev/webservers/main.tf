@@ -1,7 +1,7 @@
 
 
 #----------------------------------------------------------
-# ACS730 - Week 3 - Terraform Introduction
+# ACS730 - FINAL PROJECT
 #
 # Build EC2 Instances
 #
@@ -132,18 +132,91 @@ resource "aws_security_group" "web_sg" {
 
   tags = merge(local.default_tags,
     {
-      "Name" = "${var.prefix}-sg"
+      "Name" = "${var.prefix}-${var.env}-sg"
     }
   )
 }
 
 # Elastic IP
 resource "aws_eip" "static_eip" {
-  count = var.num_linux_vms
+  count    = var.num_linux_vms
   instance = aws_instance.my_amazon[count.index].id
   tags = merge(local.default_tags,
     {
       "Name" = "${var.prefix}-eip"
     }
   )
+}
+
+# Bastion
+resource "aws_instance" "bastion" {
+  ami                         = data.aws_ami.latest_amazon_linux.id
+  instance_type               = lookup(var.instance_type, var.env)
+  key_name                    = aws_key_pair.web_key.key_name
+  subnet_id                   = data.terraform_remote_state.network.outputs.public_subnet_ids[0]
+  security_groups             = [aws_security_group.bastion_sg.id]
+  associate_public_ip_address = true
+
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = merge(local.default_tags,
+    {
+      "Name" = "${var.prefix} ${var.env}-bastion"
+    }
+  )
+}
+
+# Bastion security group
+resource "aws_security_group" "bastion_sg" {
+  name        = "allow_ssh"
+  description = "Allow SSH inbound traffic"
+  vpc_id      = data.terraform_remote_state.network.outputs.vpc_id
+
+
+
+  ingress {
+    description      = "SSH from everywhere"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["${var.my_private_ip}/32", "${var.my_public_ip}/32"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+
+
+  tags = merge(local.default_tags,
+    {
+      "Name" = "${var.prefix}-${var.env} bastion_sg"
+    }
+  )
+}
+
+
+module "asg-dev" {
+  source = "../../../modules/autoscaling"
+  #source              = "git@github.com:igeiman/aws_network.git"
+  env                 = var.env
+  prefix              = var.prefix
+  default_tags        = var.default_tags
+}
+
+module "alb-dev" {
+  source = "../../../modules/loadbalancer"
+  #source              = "git@github.com:igeiman/aws_network.git"
+  env                 = var.env
+  prefix              = var.prefix
+  default_tags        = var.default_tags
+  
 }
