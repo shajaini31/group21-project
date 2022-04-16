@@ -34,7 +34,7 @@ data "terraform_remote_state" "network" { // This is to use Outputs from Remote 
 
 
 # Data source for availability zones in us-east-1
-data "aws_availability_zones" "available" {
+ data "aws_availability_zones" "available" {
   state = "available"
 }
 
@@ -67,7 +67,7 @@ resource "aws_instance" "my_amazon" {
       "Name" = "${var.prefix}-${var.env} Amazon-Linux ${count.index} "
     }
   )
-}
+} 
 
 # Attach EBS volume
 resource "aws_volume_attachment" "ebs_att" {
@@ -202,7 +202,6 @@ resource "aws_security_group" "bastion_sg" {
     }
   )
 }
-
 
 module "asg-dev" {
   source = "../../../modules/autoscaling"
