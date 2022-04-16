@@ -40,5 +40,15 @@ variable "num_linux_vms" {
   type        = number
 }
 
+variable "my_public_ip" {
+  type        = string
+  default     = "44.200.7.127"
+  description = "admin public ip"
+}
 
+variable "my_private_ip" {
+  type        = string
+  default     = "172.31.0.162"
+  description = "admin private ip"
+}
 
