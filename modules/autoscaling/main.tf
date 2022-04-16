@@ -40,7 +40,7 @@ data "terraform_remote_state" "webservers" { // This is to use Outputs from Remo
 resource "aws_launch_configuration" "as_conf" {
   name_prefix   = "Launch configuration for ${var.env}"
   image_id      = data.aws_ami.latest_amazon_linux.id
-  instance_type = "t3.micro"
+  instance_type = "t3.medium"
   key_name                    = "${var.prefix}"
   security_groups             = data.terraform_remote_state.webservers.outputs.security_group_web_sg[*]
 
@@ -55,7 +55,7 @@ resource "aws_autoscaling_group" "asg" {
   launch_configuration = aws_launch_configuration.as_conf.name
   desired_capacity     = 2
   min_size             = 1
-  max_size             = 2
+  max_size             = 3
  /* key_name = "${var.prefix}"
   subnet_id                   = data.terraform_remote_state.network.outputs.private_subnet_ids[count.index]
   security_groups             = [aws_security_group.web_sg.id]

@@ -42,7 +42,7 @@ variable "num_linux_vms" {
 
 variable "my_public_ip" {
   type        = string
-  default     = "3.239.181.61"
+  default     = "44.200.7.127"
   description = "admin public ip"
 }
 
