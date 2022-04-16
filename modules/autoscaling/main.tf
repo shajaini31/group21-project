@@ -21,7 +21,7 @@ data "aws_ami" "latest_amazon_linux" {
 data "terraform_remote_state" "network" { // This is to use Outputs from Remote State
   backend = "s3"
   config = {
-    bucket = "${var.env}-acsproject-group21"        // Bucket from where to GET Terraform State
+    bucket = "${var.env}--acsproject-group21"        // Bucket from where to GET Terraform State
     key    = "${var.env}-network/terraform.tfstate" // Object name in the bucket to GET Terraform State
     region = "us-east-1"                            // Region where bucket created
   }
@@ -30,7 +30,7 @@ data "terraform_remote_state" "network" { // This is to use Outputs from Remote 
 data "terraform_remote_state" "webservers" { // This is to use Outputs from Remote State
   backend = "s3"
   config = {
-    bucket = "${var.env}-acsproject-group21"        // Bucket from where to GET Terraform State
+    bucket = "${var.env}--acsproject-group21"        // Bucket from where to GET Terraform State
     key    = "${var.env}-webservers/terraform.tfstate" // Object name in the bucket to GET Terraform State
     region = "us-east-1"                            // Region where bucket created
   }
@@ -53,7 +53,7 @@ resource "aws_autoscaling_group" "asg" {
   name                 = "ASG for ${var.prefix} ${var.env}"
   vpc_zone_identifier      = data.terraform_remote_state.network.outputs.private_subnet_ids[*]
   launch_configuration = aws_launch_configuration.as_conf.name
-  desired_capacity     = 2
+  desired_capacity     = 3
   min_size             = 1
   max_size             = 3
  /* key_name = "${var.prefix}"
