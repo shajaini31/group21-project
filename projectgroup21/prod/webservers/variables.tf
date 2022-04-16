@@ -2,9 +2,8 @@
 variable "instance_type" {
   default = {
     "prod"    = "t3.medium"
-    "test"    = "t3.micro"
-    "staging" = "t2.micro"
-    "dev"     = "t2.micro"
+    "staging" = "t3.small"
+    "dev"     = "t3.micro"
   }
   description = "Type of the instance"
   type        = map(string)
@@ -13,7 +12,7 @@ variable "instance_type" {
 # Default tags
 variable "default_tags" {
   default = {
-    "Owner" = "Irina"
+    "Owner" = "group21"
     "App"   = "Web"
   }
   type        = map(any)
@@ -22,7 +21,7 @@ variable "default_tags" {
 
 # Prefix to identify resources
 variable "prefix" {
-  default     = "week5"
+  default     = "group21"
   type        = string
   description = "Name prefix"
 }
@@ -35,6 +34,21 @@ variable "env" {
   description = "Deployment Environment"
 }
 
+variable "num_linux_vms" {
+  default     = 3
+  description = "Number of Linux VMs to provision"
+  type        = number
+}
 
+variable "my_public_ip" {
+  type        = string
+  default     = "3.84.144.179"
+  description = "admin public ip"
+}
 
+variable "my_private_ip" {
+  type        = string
+  default     = "172.31.39.227"
+  description = "admin private ip"
+}
 

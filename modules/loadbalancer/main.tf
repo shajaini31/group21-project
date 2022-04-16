@@ -12,7 +12,7 @@ data "aws_availability_zones" "available" {
 data "terraform_remote_state" "network" { // This is to use Outputs from Remote State
   backend = "s3"
   config = {
-    bucket = "${var.env}-acsproject-group21"        // Bucket from where to GET Terraform State
+    bucket = "${var.env}--acsproject-group21"        // Bucket from where to GET Terraform State
     key    = "${var.env}-network/terraform.tfstate" // Object name in the bucket to GET Terraform State
     region = "us-east-1"                            // Region where bucket created
   }
@@ -21,7 +21,7 @@ data "terraform_remote_state" "network" { // This is to use Outputs from Remote 
 data "terraform_remote_state" "webservers" { // This is to use Outputs from Remote State
   backend = "s3"
   config = {
-    bucket = "${var.env}-acsproject-group21"        // Bucket from where to GET Terraform State
+    bucket = "${var.env}--acsproject-group21"        // Bucket from where to GET Terraform State
     key    = "${var.env}-webservers/terraform.tfstate" // Object name in the bucket to GET Terraform State
     region = "us-east-1"                            // Region where bucket created
   }
