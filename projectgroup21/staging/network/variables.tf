@@ -36,7 +36,7 @@ variable "vpc_cidr" {
 
 # Variable to signal the current environment 
 variable "env" {
-  default     = "staging1"
+  default     = "staging"
   type        = string
   description = "Deployment Environment"
 }
