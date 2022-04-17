@@ -3,10 +3,10 @@
 #value = aws_instance.my_amazon.public_ip
 #}
 
-output "web_eip" {
+/*output "web_eip" {
   value = aws_eip.static_eip[*].public_ip
 }
-
+*/
 output "security_group_web_sg" {
     value = aws_security_group.web_sg.id
 }

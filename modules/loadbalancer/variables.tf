@@ -43,7 +43,7 @@ variable "sg" {
   description = "Security group"
 }
 variable "num_count" {
-  default     = 2
+  default     =3
   description = "Number of count"
   type        = number
 }
