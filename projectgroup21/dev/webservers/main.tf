@@ -26,7 +26,7 @@ data "aws_ami" "latest_amazon_linux" {
 data "terraform_remote_state" "network" { // This is to use Outputs from Remote State
   backend = "s3"
   config = {
-    bucket = "${var.env}-acsproject-group21"        // Bucket from where to GET Terraform State
+    bucket = "${var.env}---acsproject-group21"        // Bucket from where to GET Terraform State
     key    = "${var.env}-network/terraform.tfstate" // Object name in the bucket to GET Terraform State
     region = "us-east-1"                            // Region where bucket created
   }
@@ -34,7 +34,7 @@ data "terraform_remote_state" "network" { // This is to use Outputs from Remote 
 
 
 # Data source for availability zones in us-east-1
- data "aws_availability_zones" "available" {
+data "aws_availability_zones" "available" {
   state = "available"
 }
 
@@ -67,7 +67,7 @@ resource "aws_instance" "my_amazon" {
       "Name" = "${var.prefix}-${var.env} Amazon-Linux ${count.index} "
     }
   )
-} 
+}
 
 # Attach EBS volume
 resource "aws_volume_attachment" "ebs_att" {

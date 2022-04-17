@@ -26,7 +26,7 @@ data "aws_ami" "latest_amazon_linux" {
 data "terraform_remote_state" "network" { // This is to use Outputs from Remote State
   backend = "s3"
   config = {
-    bucket = "${var.env}-acsproject-group21"        // Bucket from where to GET Terraform State
+    bucket = "${var.env}---acsproject-group21"        // Bucket from where to GET Terraform State
     key    = "${var.env}-network/terraform.tfstate" // Object name in the bucket to GET Terraform State
     region = "us-east-1"                            // Region where bucket created
   }
@@ -81,8 +81,8 @@ resource "aws_volume_attachment" "ebs_att" {
 
 # Adding SSH key to Amazon EC2
 resource "aws_key_pair" "web_key" {
-  key_name   = var.prefix
-  public_key = file("${var.prefix}.pub")
+  key_name   = "${var.prefix}b"
+  public_key = file("${var.prefix}b.pub")
 }
 
 # Create another EBS volume
@@ -138,7 +138,7 @@ resource "aws_security_group" "web_sg" {
 }
 
 # Elastic IP
-resource "aws_eip" "static_eip" {
+/*resource "aws_eip" "static_eip" {
   count    = var.num_linux_vms
   instance = aws_instance.my_amazon[count.index].id
   tags = merge(local.default_tags,
@@ -147,7 +147,7 @@ resource "aws_eip" "static_eip" {
     }
   )
 }
-
+*/
 # Bastion
 resource "aws_instance" "bastion" {
   ami                         = data.aws_ami.latest_amazon_linux.id
@@ -204,7 +204,7 @@ resource "aws_security_group" "bastion_sg" {
 }
 
 
-module "asg-staging1" {
+module "asg-staging" {
   source = "../../../modules/autoscaling"
   #source              = "git@github.com:igeiman/aws_network.git"
   env                 = var.env
@@ -212,7 +212,7 @@ module "asg-staging1" {
   default_tags        = var.default_tags
 }
 
-module "alb-staging1" {
+module "alb-staging" {
   source = "../../../modules/loadbalancer"
   #source              = "git@github.com:igeiman/aws_network.git"
   env                 = var.env

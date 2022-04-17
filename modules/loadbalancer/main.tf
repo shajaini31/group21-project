@@ -61,7 +61,7 @@ resource "aws_lb_listener" "lb_listener" {
   }
 }
 
-resource "aws_lb_target_group_attachment""targetatt"{
+resource "aws_lb_target_group_attachment" "targetatt"{
   count = var.num_count
   target_group_arn = "${aws_lb_target_group.targetgroup.arn}"
   target_id = data.terraform_remote_state.webservers.outputs.instance_id[count.index]

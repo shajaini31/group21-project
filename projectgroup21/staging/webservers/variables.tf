@@ -2,7 +2,7 @@
 variable "instance_type" {
   default = {
     "prod"    = "t3.medium"
-    "staging1" = "t3.small"
+    "staging" = "t3.small"
   }
   description = "Type of the instance"
   type        = map(string)
@@ -28,7 +28,7 @@ variable "prefix" {
 
 # Variable to signal the current environment 
 variable "env" {
-  default     = "staging1"
+  default     = "staging"
   type        = string
   description = "Deployment Environment"
 }
@@ -41,13 +41,13 @@ variable "num_linux_vms" {
 
 variable "my_public_ip" {
   type        = string
-  default     = "18.207.159.179"
+  default     = "3.239.158.177"
   description = "admin public ip"
 }
 
 variable "my_private_ip" {
   type        = string
-  default     = "172.31.0.162"
+  default     = "172.31.6.252"
   description = "admin private ip"
 }
 
